@@ -95,14 +95,12 @@ export interface IDetailedPackageInfo {
 		unit: string
 		value: string
 	}
-	credits: Credit[
-	]
+	credits: Credit[]
 	initialCredit: {
 		unit: string
 		value: string
 	}
-	initialCredits: Credit[
-	]
+	initialCredits: Credit[]
 	description: string //"Yurt İçi İnternet"
 	endDate: string
 	usageRatio: number
@@ -113,4 +111,42 @@ export interface IDetailedPackageInfo {
 	type: ""
 	creditDescription: ""
 	isUnlimited: boolean
+}
+
+interface ISubscriber {
+	brand: "POSTPAID"
+	customerType: "PERSONAL"
+	gender: ""
+	msisdn: string
+	name: string
+	status: ""
+	surname: string
+	virtualBrand: "POST"
+	isRoaming: boolean
+	customerSource: string
+	email: string
+	birthDate: string
+	isAuthorized: boolean
+	packageId: string
+	isNewUser: boolean
+	isCosbyMember: boolean
+	isCosbyLeader: boolean
+	isEiqCustomer: boolean
+	marketingId: string
+	segmentList: ["POSTPAID"]
+	userBirthDate: ""
+	preferredLanguage: ""
+	productList: string[]
+	clusterId: string
+	billingAccountId: ""
+	customerId: ""
+	nationality: ""
+	subscriberStartDate: string
+	birthdayWeek: boolean
+	anniversaryWeek: boolean
+	anniversaryCount: number
+	dashboardIconType: 0
+	subSegment: ""
+	zebro: boolean
+	authorizerMsisdn: ""
 }

@@ -1,17 +1,22 @@
 import React from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
-import { Link, Tabs } from "expo-router"
+import { Link, Redirect, router, Tabs } from "expo-router"
 import { Pressable } from "react-native"
 
 import Colors from "@/constants/Colors"
 import { useColorScheme } from "@/components/useColorScheme"
 import { Feather } from "@expo/vector-icons"
+import { useVodafoneStore } from "@/common/stores/VodafoneStore"
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme()
 
+	const sid = useVodafoneStore((state) => state.sid)
+	if (!sid) {
+		return <Redirect href={"/auth"}/>
+	}
 	return (
 		<Tabs
 			screenOptions={{
@@ -25,7 +30,6 @@ export default function TabLayout() {
 				options={{
 					title: "Tab One",
 					tabBarIcon: ({ color }) => <Feather size={28} name="package" color={color} />,
-
 				}}
 			/>
 			<Tabs.Screen
