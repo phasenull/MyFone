@@ -150,3 +150,15 @@ interface ISubscriber {
 	zebro: boolean
 	authorizerMsisdn: ""
 }
+
+export interface IExchangeTokenContext {
+	sub: string
+	user_info: {
+		email_verified: boolean
+		phone_number_verified: boolean
+		sub: string
+	}
+	sessionId: string
+	exp: number
+	iat: number
+}

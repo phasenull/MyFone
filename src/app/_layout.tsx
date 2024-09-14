@@ -1,7 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native"
 import { useFonts } from "expo-font"
-import { Stack } from "expo-router"
+import { Redirect, Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
 import "react-native-reanimated"
@@ -46,6 +46,8 @@ export default function RootLayout() {
 	return <RootLayoutNav />
 }
 import * as Updates from "expo-updates"
+import AuthValidator from "@/components/validators/AuthValidator"
+import { useVodafoneStore } from "@/common/stores/VodafoneStore"
 const queryClient = new QueryClient({
 	defaultOptions: { queries: { retry: 1 } },
 })
@@ -58,21 +60,25 @@ function RootLayoutNav() {
 				alert("update")
 				await Updates.fetchUpdateAsync()
 				await Updates.reloadAsync()
+			} else {
+				alert("no update available")
 			}
 		} catch (error) {
+			if (`${error}`.startsWith("Error: checkForUpdateAsync() is not supported in Expo Go.")) return
 			// You can also add an alert() to see the error message in case of an error when fetching updates.
 			alert(`Error fetching latest Expo update: ${error}`)
 		}
 	}
+	const {fetchAccessToken} = useVodafoneStore()
 	useEffect(() => {
+		fetchAccessToken()
 		onFetchUpdateAsync()
 	}, [])
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-				<Stack>
-					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/index" options={{ headerShown: false, title: "Authenticate" }} />
+				<Stack screenOptions={{headerShown:false}}>
+
 				</Stack>
 			</ThemeProvider>
 		</QueryClientProvider>
