@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useVodafoneStore } from "../stores/VodafoneStore";
-import { getInvoiceAsync, getPackageListWithDetail, getSubscriberAsync } from "../helpers/Vodafone/MainHelper";
+import { getInvoiceAsync, getPackageListWithDetail, getSubscriberAsync, getTariffAndOptions } from "../helpers/Vodafone/MainHelper";
 
 export function useGetSubscriber() {
 	const sid = useVodafoneStore((state)=>state.access_token)
@@ -10,7 +10,14 @@ export function useGetSubscriber() {
 		return await getSubscriberAsync(sid)
 	},staleTime:60*1000})
 }
-
+export function useGetTariffAndOptions() {
+	const sid = useVodafoneStore((state)=>state.access_token)
+	return useQuery({queryKey:["getTariffAndOptions",sid],queryFn:async()=>{
+		console.info("useGetTariffAndOPtions")
+		if (!sid) throw new Error("not logged in")
+		return await getTariffAndOptions(sid)
+	}})
+}
 export function useGetDetailedTariff() {
 	const sid = useVodafoneStore((state)=>state.access_token)
 	return useQuery({queryKey:["getDetailedTariff",sid],queryFn:async ()=>{

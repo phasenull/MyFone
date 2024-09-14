@@ -61,7 +61,7 @@ function RootLayoutNav() {
 				await Updates.fetchUpdateAsync()
 				await Updates.reloadAsync()
 			} else {
-				alert("no update available")
+				// alert("no update available")
 			}
 		} catch (error) {
 			if (`${error}`.startsWith("Error: checkForUpdateAsync() is not supported in Expo Go.")) return

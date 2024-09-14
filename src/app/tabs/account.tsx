@@ -74,29 +74,30 @@ export default function TabOneScreen() {
 						)
 					})}
 				</View>
-				<Text
-					style={[
-						Styles.title,
-						{
-							color: Colors.light.text,
-							columnGap: 5,
-							fontSize: 28,
-							textAlign: "center",
-							opacity: 0.7,
-						},
-					]}
-				>
-					{tariff?.priceAmount.value} TL
-				</Text>
+				{invoice?.invoice?.dueAmount && (
+					<Text
+						style={[
+							Styles.title,
+							{
+								color: Colors.light.text,
+								columnGap: 5,
+								fontSize: 28,
+								textAlign: "center",
+								opacity: 0.7,
+							},
+						]}
+					>
+						{invoice?.invoice.dueAmount.value} TL <Text style={{fontSize:16}}>{invoice?.invoice?.infoMsg}</Text>
+					</Text>
+				)}
 				{/* <Text>
 					{JSON.stringify(tariffData?.options,undefined,4)}
 				</Text> */}
 				{tariffData?.options?.map((option) => (
-					<TouchableOpacity style={{marginTop:2*4}} onPress={() => alert(`${option.name}\n${option.description}\n\n${option.bulletList}`)}>
+					<TouchableOpacity style={{ marginTop: 2 * 4 }} onPress={() => alert(`${option.name}\n${option.description}\n\n${option.bulletList}`)}>
 						<Text>
 							+ {option.name} | {option.categoryName}
 						</Text>
-						
 					</TouchableOpacity>
 				))}
 			</Container>

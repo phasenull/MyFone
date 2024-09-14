@@ -23,13 +23,11 @@ export default function AccountTab() {
 		>
 			{tariffData?.detailedPackageList.detailedPackageInfo.map((tariff, i) => (
 				<Container key={i}>
-					<View style={{flex:1,flexDirection:"row",justifyContent:"space-between"}}>
-						<Text style={{ fontSize: 16, opacity: 0.5, fontWeight: "600", }}>
-							{tariff.description}
+					<View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+						<Text style={{ fontSize: 16, opacity: 0.5, fontWeight: "600" }}>{tariff.description}</Text>
+						<Text style={{ opacity: 0.5, fontSize: 16 }}>
+							{tariff.credits[0].value}/{tariff.initialCredits[0].value} {tariff.credits[0].unit}
 						</Text>
-							<Text style={{opacity:0.5,fontSize:16 }}>
-								{tariff.credits[0].value}/{tariff.initialCredits[0].value} {tariff.credits[0].unit}
-							</Text>
 					</View>
 					<View style={{ backgroundColor: "#e9e9e9", height: 1 * 4, marginTop: 2 * 4, width: "100%" }}>
 						<View
@@ -40,6 +38,7 @@ export default function AccountTab() {
 							}}
 						/>
 					</View>
+					<Text style={{ opacity: 0.5, fontSize: 12,textAlign:"center" }}>{new Date(tariff.endDate).toLocaleString()}</Text>
 				</Container>
 			))}
 		</ScrollView>
