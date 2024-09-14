@@ -14,7 +14,19 @@ export async function getSubscriberAsync(sid: string) {
 	if (result.result === "FAIL") return
 	return result as Vodafone.Responses.Subscriber.Success
 }
-
+export async function getTariffAndOptions(sid: string) {
+	const url = API_SERVICE
+	const request = await fetch(
+		`${url}?${new URLSearchParams({
+			sid: sid,
+			method: "getTariffAndOptions",
+		})}`,
+		{ method: "POST" }
+	)
+	const result = await request.json()
+	if (result.result === "FAIL") return
+	return result as Vodafone.Responses.Tariffs.getTariffAndOptions.Success
+}
 export async function getInvoiceAsync(sid: string) {
 	const url = API_SERVICE
 	const request = await fetch(

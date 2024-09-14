@@ -2,19 +2,21 @@ import { ScrollView, StyleSheet, TouchableHighlight, TouchableOpacity } from "re
 
 import { Text, View } from "@/components/Themed"
 import { Styles } from "@/constants/Styles"
-import { useGetDetailedTariff, useGetInvoice, useGetSubscriber } from "@/common/hooks/UserHooks"
+import { useGetDetailedTariff, useGetInvoice, useGetSubscriber, useGetTariffAndOptions } from "@/common/hooks/UserHooks"
 import Container from "@/components/Container"
-import { FontAwesome } from "@expo/vector-icons"
+import { EvilIcons, FontAwesome, Ionicons } from "@expo/vector-icons"
 import { Redirect } from "expo-router"
 import Colors from "@/constants/Colors"
 import { useVodafoneStore } from "@/common/stores/VodafoneStore"
 
 export default function TabOneScreen() {
 	const { data, isLoading } = useGetSubscriber()
+	const { data: tariffData } = useGetTariffAndOptions()
 	const { logout } = useVodafoneStore()
 	const user = data?.subscriber
 	if (!user) return <Redirect href={"/auth"} />
 	const { data: invoice } = useGetInvoice()
+	const tariff = tariffData?.tariff
 	return (
 		<ScrollView
 			contentContainerStyle={{
@@ -39,7 +41,64 @@ export default function TabOneScreen() {
 			</TouchableOpacity>
 
 			<Container>
-				<Text>{JSON.stringify(invoice, undefined, 4)}</Text>
+				<View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" }}>
+					<Text style={[Styles.title, { color: Colors.light.text, columnGap: 5 }]}>
+						<Ionicons name="document" size={20} /> Your Tariff
+					</Text>
+					<Text style={{ fontSize: 14, fontWeight: "600" }}>{tariff?.name}</Text>
+				</View>
+				<View style={{ backgroundColor: Colors.light.tint, width: "100%", height: 1 * 4, marginTop: 1 * 4 }} />
+				<View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 4 * 4, marginBottom: 16 * 4 }}>
+					{tariff?.benefits.benefit.map((benefit, i, arr) => {
+						const percentage = i / (arr.length - 1)
+						const calc = (x: number) => -((x - 0.5) ** 2) * 2
+						return (
+							<View
+								key={`${benefit.amount.string} ${benefit.type}`}
+								style={{
+									bottom: calc(percentage) * 100,
+									borderRadius: 10000,
+									borderColor: Colors.light.tint,
+									borderWidth: 1 * 4,
+									justifyContent: "center",
+									alignItems: "center",
+									padding: 1 * 4,
+									flex: 1,
+									aspectRatio: 1,
+								}}
+							>
+								<Text style={[Styles.title, { color: Colors.light.text, columnGap: 5, fontSize: 14, opacity: 0.7 }]}>
+									{benefit.amount.string} {benefit.type}
+								</Text>
+							</View>
+						)
+					})}
+				</View>
+				<Text
+					style={[
+						Styles.title,
+						{
+							color: Colors.light.text,
+							columnGap: 5,
+							fontSize: 28,
+							textAlign: "center",
+							opacity: 0.7,
+						},
+					]}
+				>
+					{tariff?.priceAmount.value} TL
+				</Text>
+				{/* <Text>
+					{JSON.stringify(tariffData?.options,undefined,4)}
+				</Text> */}
+				{tariffData?.options?.map((option) => (
+					<TouchableOpacity style={{marginTop:2*4}} onPress={() => alert(`${option.name}\n${option.description}\n\n${option.bulletList}`)}>
+						<Text>
+							+ {option.name} | {option.categoryName}
+						</Text>
+						
+					</TouchableOpacity>
+				))}
 			</Container>
 		</ScrollView>
 	)

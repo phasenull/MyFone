@@ -208,7 +208,7 @@ declare namespace Vodafone.Responses.Tariffs.getTariffAndOptions {
 				benefitListHolderRto: {}
 				categoryName: "Aşım Planı" | string
 				categoryDescription: string
-			}[]
+			}
 		]
 		tariffErrDesc: ""
 		optionErrDesc: ""

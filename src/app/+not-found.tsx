@@ -5,7 +5,6 @@ import { Text, View } from "@/components/Themed"
 
 export default function NotFoundScreen() {
 	const pathName = usePathname()
-	const segments = useSegments()
 	return (
 		<>
 			<Stack.Screen options={{ title: "Oops!" }} />

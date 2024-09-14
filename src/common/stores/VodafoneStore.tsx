@@ -56,18 +56,18 @@ export const useVodafoneStore = create<IVodafoneStore>()(
 					return [false, "not logged in"]
 				}
 				const result = await tokenExchangeAsync({ sid: sid })
-				console.log("token exchante with refresh_token",sid)
 				const access_token = result.access_token
 				if (!access_token) {
 					console.log("result",result)
 					console.log("store.fetchAccessToken access_token is null")
-
+					
 					set({ refresh_token: undefined, access_token: undefined })
 					return [false, "auth error (server did not return access token)"]
 				}
 				const [_, jwtContext, __] = access_token.split(".")
 				if (!jwtContext) return [false, "jwtContent is null"]
 				const jwtPayload = JSON.parse(atob(`${jwtContext}==`)) as IExchangeTokenContext
+				console.log("token exchante with refresh_token",sid,jwtPayload.sessionId)
 				set({ access_token: jwtPayload.sessionId })
 				return [jwtPayload.sessionId]
 			},
