@@ -8,7 +8,7 @@ import { useState } from "react"
 import { Button, InputModeOptions, TextInput, TouchableOpacity } from "react-native"
 
 export default function AuthScreen() {
-	const sid = useVodafoneStore((state) => state.sid)
+	const access_token = useVodafoneStore((state) => state.access_token)
 	const [username, setUsername] = useState<undefined | string>(undefined)
 	const [password, setPassword] = useState<undefined | string>(undefined)
 	const [OTP, setOTP] = useState<undefined | string>(undefined)
@@ -28,34 +28,17 @@ export default function AuthScreen() {
 			otp: OTP,
 		})
 	}
-	if (sid) {
-		return <Redirect href={"/(tabs)"} />
-	}
-	if (error?.message === "custom.otp" || OTP) {
-		return (
-			<View style={[Styles.container, { rowGap: 6 * 4 }]}>
-				<Input autoComplete="sms-otp" maxLength={4} inputMode="numeric" value={OTP} placeholder="OTP" onTextChange={setOTP} />
-				{isError && error && error.message !== "custom.otp" ? <Text style={{ color: Colors.light.tint }}>Error: {error?.message}</Text> : null}
-				<TouchableOpacity
-					style={{
-						backgroundColor: Colors.light.tint,
-						paddingHorizontal: 7 * 4,
-						paddingVertical: 2 * 4,
-						borderRadius: 2 * 4,
-					}}
-					onPress={Login}
-				>
-					<Text style={{ color: Colors.light.background, fontSize: 28 }}>login</Text>
-				</TouchableOpacity>
-			</View>
-		)
+	if (access_token) {
+		return <Redirect href={{pathname:"/tabs"}} />
 	}
 	return (
 		<View style={[Styles.container, { rowGap: 6 * 4 }]}>
 			{/* <Text style={{ color: Colors.light.tint }}>Login using your phone no and password!</Text> */}
 			<Input autoComplete="tel" inputMode="tel" value={username} placeholder="phone no" onTextChange={setUsername} />
 			<Input autoComplete="password" inputMode="numeric" maxLength={8} value={password} placeholder="password no" onTextChange={setPassword} />
-			{isError && error ? <Text style={{ color: Colors.light.tint }}>Error: {error?.message}</Text> : null}
+
+			<Input autoComplete="sms-otp" maxLength={4} inputMode="numeric" value={OTP} placeholder="OTP" onTextChange={setOTP} />
+			{isError && error && error.message !== "custom.otp" ? <Text style={{ color: Colors.light.tint }}>Error: {error?.message}</Text> : null}
 			<TouchableOpacity
 				style={{
 					backgroundColor: Colors.light.tint,
